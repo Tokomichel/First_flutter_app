@@ -4,9 +4,9 @@ class Recipe {
   late String imageUrl;
   late String description;
   late bool isFavorited;
-  late int favoriteCVount;
+  late int favoriteCount;
 
   Recipe // constructeur de recipe
   (this.title, this.user, this.imageUrl, this.description, this.isFavorited,
-      this.favoriteCVount);
+      this.favoriteCount);
 }

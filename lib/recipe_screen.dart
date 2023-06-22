@@ -2,6 +2,7 @@ import 'package:azote/recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'favorite_widget.dart';
+import 'favoritechangeNotifier.dart';
 
 
 //       "Faire cuire la viande et commencer la preparation des conjiments \nFaire cuire Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum earum debitis maiores vel aspernatur explicabo quod pariatur excepturi voluptatem aperiam!Reiciendis provident debitis repellat perspiciatis deleniti harum dolore veritatis porro sint praesentium. Ex dolore sequi unde a soluta quas. Numquam.Quibusdam placeat reprehenderit, facere minus facilis modi non nam laborum ullam voluptatibus, quidem dolore cum inventore quos totam iure vitae!Totam nulla consectetur quo iste ab minus pariatur dolorum sapiente velit recusandae explicabo, provident dignissimos, eligendi repellat. Impedit, excepturi quasi.Quo incidunt quia delectus architecto consequatur eligendi ipsa neque dolorem deleniti. Deleniti nobis recusandae provident quod porro blanditiis rerum eum.Earum obcaecati soluta tenetur architecto quod odio amet perspiciatis mollitia reiciendis? Illo repellendus minima iste aspernatur odio at laudantium voluptatibus.Quam rem magnam nihil quia nobis dolorum adipisci cum saepe, dolores commodi vero laudantium eos sint consequuntur! Facilis, dolorum officiis.Repudiandae ratione optio aut aspernatur, rerum dolorem praesentium tempore consectetur architecto repellendus, ullam porro deserunt nulla ipsam, quis perspiciatis. Nam?Aperiam nostrum veritatis ab tempore cum velit, commodi, hic dolores quia maiores obcaecati voluptatum fuga ullam, distinctio placeat quas consequatur?Quis aliquid maiores fugiat dignissimos officia 
@@ -25,25 +26,28 @@ class RecipeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Mes recettes'),
-          elevation: 9,
-        ),
-        body: ListView(
-          children: [
-            FadeInImage.assetNetwork(
-              placeholder: "images/loading-waiting.gif",
-              image: recipe.imageUrl, //"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn7nTfAtP3HjJD6nMl9VJklVer3CVuTvtTvA&usqp=CAU",
-              width: 600,
-              height: 240,
-              fit: BoxFit.cover,
-            ),
-            recipeTitle(),
-            buttonSection(),
-            description()
-          ],
-        ));
+    return ChangeNotifierProvider(
+      create: (context) => FavoriteChangeNotifier(recipe.isFavorited, recipe.favoriteCount),
+      child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Mes recettes'),
+            elevation: 9,
+          ),
+          body: ListView(
+            children: [
+              FadeInImage.assetNetwork(
+                placeholder: "images/loading-waiting.gif",
+                image: recipe.imageUrl, //"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn7nTfAtP3HjJD6nMl9VJklVer3CVuTvtTvA&usqp=CAU",
+                width: 600,
+                height: 240,
+                fit: BoxFit.cover,
+              ),
+              recipeTitle(),
+              buttonSection(),
+              description()
+            ],
+          )),
+    );
   }
 
   Widget buttonSection() {
