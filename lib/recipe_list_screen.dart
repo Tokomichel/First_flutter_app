@@ -1,4 +1,5 @@
 import 'package:azote/recipe.dart';
+import 'package:azote/recipe_screen.dart';
 import 'package:flutter/material.dart';
 
 class RecipeListScreen extends StatefulWidget {
@@ -107,39 +108,67 @@ class RecipeItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(8),
-      elevation: 8,
-      child: Row(
-        children: [
-          FadeInImage.assetNetwork(
-            placeholder: "images/loading-waiting.gif",
-            image: recipe
-                .imageUrl, //"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn7nTfAtP3HjJD6nMl9VJklVer3CVuTvtTvA&usqp=CAU",
-            width: 600,
-            height: 240,
-            fit: BoxFit.cover,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    recipe.title,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 20),
-                  ),
-                ),
-                Text(
-                  recipe.user,
-                  style: TextStyle(color: Colors.grey[500], fontSize: 16),
-                ),
-              ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  RecipeScreen(recipe: recipe),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                // var begin = Offset(0.0, 1.0);
+                // var end = Offset.zero;
+                // var tween = Tween(begin: begin, end: end);
+
+                // return SlideTransition(
+                //   position: animation.drive(tween),
+                //   child: child,
+                // );
+
+                animation =
+                    CurvedAnimation(parent: animation, curve: Curves.ease);
+                return FadeTransition(opacity: animation, child: child);
+              },
+            ));
+      },
+      child: Card(
+        margin: const EdgeInsets.all(8),
+        elevation: 8,
+        child: Row(
+          children: [
+            Hero(
+              tag: "recipe ${recipe.title}" ,
+              child: FadeInImage.assetNetwork(
+                placeholder: "images/loading-waiting.gif",
+                image: recipe
+                    .imageUrl, //"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn7nTfAtP3HjJD6nMl9VJklVer3CVuTvtTvA&usqp=CAU",
+                width: 600,
+                height: 240,
+                fit: BoxFit.cover,
+              ),
             ),
-          )
-        ],
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Text(
+                      recipe.title,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                  ),
+                  Text(
+                    recipe.user,
+                    style: TextStyle(color: Colors.grey[500], fontSize: 16),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

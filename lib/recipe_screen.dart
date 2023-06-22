@@ -34,13 +34,19 @@ class RecipeScreen extends StatelessWidget {
           ),
           body: ListView(
             children: [
-              FadeInImage.assetNetwork(
-                placeholder: "images/loading-waiting.gif",
-                image: recipe
-                    .imageUrl, //"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn7nTfAtP3HjJD6nMl9VJklVer3CVuTvtTvA&usqp=CAU",
-                width: 600,
-                height: 240,
-                fit: BoxFit.cover,
+              Hero(
+                tag: "recipe ${recipe.title
+                
+                
+                }",
+                child: FadeInImage.assetNetwork(
+                  placeholder: "images/loading-waiting.gif",
+                  image: recipe
+                      .imageUrl, //"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn7nTfAtP3HjJD6nMl9VJklVer3CVuTvtTvA&usqp=CAU",
+                  width: 600,
+                  height: 240,
+                  fit: BoxFit.cover,
+                ),
               ),
               recipeTitle(),
               buttonSection(),
