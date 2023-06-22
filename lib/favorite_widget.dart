@@ -1,50 +1,40 @@
+import 'package:azote/favoritechangeNotifier.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class FavoriteIconWidget extends StatefulWidget {
-  final bool isFavorited;
-  final int favoriteCount;
-
-  const FavoriteIconWidget(
-      {Key? cle, required this.favoriteCount, required this.isFavorited})
-      : super(key: cle);
+  late bool isFavorited;
 
   // ignore: library_private_types_in_public_api, annotate_overrides, no_logic_in_create_state
-  _FavoriteIconWidgetState createState() => _FavoriteIconWidgetState(isFavorited, favoriteCount);
+  _FavoriteIconWidgetState createState() => _FavoriteIconWidgetState();
 }
 
 class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
   // ignore: unused_field, prefer_final_fields
-  bool _isFavorited ;
-  // ignore: unused_field, prefer_final_fields
-  int _favoriteCount ;
-
-  _FavoriteIconWidgetState(this._isFavorited, this._favoriteCount);
+  late bool _isFavorited;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-          // ignore: prefer_const_constructors
-          icon:
-              _isFavorited ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
-          color: Colors.red,
-          onPressed: _toggleFavorite,
-        ),
-        Text("$_favoriteCount")
-      ],
+    FavoriteChangeNotifier notifier =
+        Provider.of<FavoriteChangeNotifier>(context);
+    _isFavorited = notifier.isFavorited;
+    return IconButton(
+      // ignore: prefer_const_constructors
+      icon: _isFavorited ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
+      color: Colors.red,
+      onPressed: () => _toggleFavorite(notifier),
     );
   }
 
-  void _toggleFavorite() {
+  void _toggleFavorite(FavoriteChangeNotifier notifier) {
     setState(() {
       if (_isFavorited) {
-        _favoriteCount -= 1;
         _isFavorited = false;
       } else {
-        _favoriteCount += 1;
         _isFavorited = true;
       }
+
+      notifier.isFavorited = _isFavorited;
     });
   }
 }
@@ -52,50 +42,17 @@ class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
 // class du texte
 
 class FavoriteTextWidget extends StatefulWidget {
-  final bool isFavorited;
-  final int favoriteCount;
-
-  const FavoriteTextWidget(
-      {Key? cle, required this.favoriteCount, required this.isFavorited})
-      : super(key: cle);
+  late int favoriteCount;
 
   // ignore: library_private_types_in_public_api, annotate_overrides, no_logic_in_create_state
-  _FavoriteTextWidgetState createState() => _FavoriteTextWidgetState(isFavorited, favoriteCount);
+  _FavoriteTextWidgetState createState() => _FavoriteTextWidgetState();
 }
 
 class _FavoriteTextWidgetState extends State<FavoriteTextWidget> {
-  // ignore: unused_field, prefer_final_fields
-  bool _isFavorited ;
-  // ignore: unused_field, prefer_final_fields
-  int _favoriteCount ;
-
-  _FavoriteTextWidgetState(this._isFavorited, this._favoriteCount);
-
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-          // ignore: prefer_const_constructors
-          icon:
-              _isFavorited ? Icon(Icons.favorite) : Icon(Icons.favorite_border),
-          color: Colors.red,
-          onPressed: _toggleFavorite,
-        ),
-        Text("$_favoriteCount")
-      ],
+    return Consumer<FavoriteChangeNotifier>(
+      builder: (context, notifier, _) => Text(notifier.favoriteCount.toString())
     );
-  }
-
-  void _toggleFavorite() {
-    setState(() {
-      if (_isFavorited) {
-        _favoriteCount -= 1;
-        _isFavorited = false;
-      } else {
-        _favoriteCount += 1;
-        _isFavorited = true;
-      }
-    });
   }
 }

@@ -4,9 +4,7 @@ import 'package:provider/provider.dart';
 import 'favorite_widget.dart';
 import 'favoritechangeNotifier.dart';
 
-
-//       "Faire cuire la viande et commencer la preparation des conjiments \nFaire cuire Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum earum debitis maiores vel aspernatur explicabo quod pariatur excepturi voluptatem aperiam!Reiciendis provident debitis repellat perspiciatis deleniti harum dolore veritatis porro sint praesentium. Ex dolore sequi unde a soluta quas. Numquam.Quibusdam placeat reprehenderit, facere minus facilis modi non nam laborum ullam voluptatibus, quidem dolore cum inventore quos totam iure vitae!Totam nulla consectetur quo iste ab minus pariatur dolorum sapiente velit recusandae explicabo, provident dignissimos, eligendi repellat. Impedit, excepturi quasi.Quo incidunt quia delectus architecto consequatur eligendi ipsa neque dolorem deleniti. Deleniti nobis recusandae provident quod porro blanditiis rerum eum.Earum obcaecati soluta tenetur architecto quod odio amet perspiciatis mollitia reiciendis? Illo repellendus minima iste aspernatur odio at laudantium voluptatibus.Quam rem magnam nihil quia nobis dolorum adipisci cum saepe, dolores commodi vero laudantium eos sint consequuntur! Facilis, dolorum officiis.Repudiandae ratione optio aut aspernatur, rerum dolorem praesentium tempore consectetur architecto repellendus, ullam porro deserunt nulla ipsam, quis perspiciatis. Nam?Aperiam nostrum veritatis ab tempore cum velit, commodi, hic dolores quia maiores obcaecati voluptatum fuga ullam, distinctio placeat quas consequatur?Quis aliquid maiores fugiat dignissimos officia 
-
+//       "Faire cuire la viande et commencer la preparation des conjiments \nFaire cuire Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum earum debitis maiores vel aspernatur explicabo quod pariatur excepturi voluptatem aperiam!Reiciendis provident debitis repellat perspiciatis deleniti harum dolore veritatis porro sint praesentium. Ex dolore sequi unde a soluta quas. Numquam.Quibusdam placeat reprehenderit, facere minus facilis modi non nam laborum ullam voluptatibus, quidem dolore cum inventore quos totam iure vitae!Totam nulla consectetur quo iste ab minus pariatur dolorum sapiente velit recusandae explicabo, provident dignissimos, eligendi repellat. Impedit, excepturi quasi.Quo incidunt quia delectus architecto consequatur eligendi ipsa neque dolorem deleniti. Deleniti nobis recusandae provident quod porro blanditiis rerum eum.Earum obcaecati soluta tenetur architecto quod odio amet perspiciatis mollitia reiciendis? Illo repellendus minima iste aspernatur odio at laudantium voluptatibus.Quam rem magnam nihil quia nobis dolorum adipisci cum saepe, dolores commodi vero laudantium eos sint consequuntur! Facilis, dolorum officiis.Repudiandae ratione optio aut aspernatur, rerum dolorem praesentium tempore consectetur architecto repellendus, ullam porro deserunt nulla ipsam, quis perspiciatis. Nam?Aperiam nostrum veritatis ab tempore cum velit, commodi, hic dolores quia maiores obcaecati voluptatum fuga ullam, distinctio placeat quas consequatur?Quis aliquid maiores fugiat dignissimos officia
 
 // classe de la page Recipe creer par Toko
 class RecipeScreen extends StatelessWidget {
@@ -14,20 +12,21 @@ class RecipeScreen extends StatelessWidget {
 
   final Recipe recipe;
 
-  Widget description(){ 
+  Widget description() {
     return Container(
-    padding: const EdgeInsets.all(32),
-    child:  Text(
-      recipe.description,
-      softWrap: true,
-    ),
-  );
+      padding: const EdgeInsets.all(32),
+      child: Text(
+        recipe.description,
+        softWrap: true,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => FavoriteChangeNotifier(recipe.isFavorited, recipe.favoriteCount),
+      create: (context) =>
+          FavoriteChangeNotifier(recipe.isFavorited, recipe.favoriteCount),
       child: Scaffold(
           appBar: AppBar(
             title: const Text('Mes recettes'),
@@ -37,7 +36,8 @@ class RecipeScreen extends StatelessWidget {
             children: [
               FadeInImage.assetNetwork(
                 placeholder: "images/loading-waiting.gif",
-                image: recipe.imageUrl, //"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn7nTfAtP3HjJD6nMl9VJklVer3CVuTvtTvA&usqp=CAU",
+                image: recipe
+                    .imageUrl, //"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn7nTfAtP3HjJD6nMl9VJklVer3CVuTvtTvA&usqp=CAU",
                 width: 600,
                 height: 240,
                 fit: BoxFit.cover,
@@ -82,6 +82,8 @@ class RecipeScreen extends StatelessWidget {
   }
 
   Widget recipeTitle() {
+    String nom = recipe.user;
+
     return Container(
         padding: const EdgeInsets.all(8),
         child: Row(
@@ -92,22 +94,17 @@ class RecipeScreen extends StatelessWidget {
               children: [
                 Container(
                   padding: const EdgeInsets.only(bottom: 6),
-                  child: const Text(
-                    "Eru facile",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  child:  Text(
+                    recipe.title,
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
-                const Text("Par Toko Michel",
-                    style: TextStyle(fontSize: 16, color: Colors.grey)),
+                 Text("Par $nom",
+                    style: const TextStyle(fontSize: 16, color: Colors.grey)),
               ],
             )),
             Row(
-              children: const [
-                FavoriteWidget(
-                  isFavorited: false,
-                  favoriteCount: 40,
-                )
-              ],
+              children: [FavoriteIconWidget(), FavoriteTextWidget()],
             )
           ],
         ));
