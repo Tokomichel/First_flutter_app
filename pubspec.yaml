@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   transparent_image: ^2.0.1
+  provider: ^6.0.5
   flutter:
     sdk: flutter
 
