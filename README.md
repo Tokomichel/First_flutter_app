@@ -1,6 +1,7 @@
-# azote
+# Azote
 
 A new Flutter project.
+Developped by Toko Michel
 
 ## Getting Started
 
