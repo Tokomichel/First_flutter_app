@@ -2,8 +2,11 @@ import 'package:azote/favoritechangeNotifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class FavoriteIconWidget extends StatefulWidget {
   late bool isFavorited;
+
+  FavoriteIconWidget({super.key});
 
   // ignore: library_private_types_in_public_api, annotate_overrides, no_logic_in_create_state
   _FavoriteIconWidgetState createState() => _FavoriteIconWidgetState();
@@ -15,8 +18,7 @@ class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
 
   @override
   Widget build(BuildContext context) {
-    FavoriteChangeNotifier notifier =
-        Provider.of<FavoriteChangeNotifier>(context);
+    FavoriteChangeNotifier notifier = Provider.of<FavoriteChangeNotifier>(context);
     _isFavorited = notifier.isFavorited;
     return IconButton(
       // ignore: prefer_const_constructors
@@ -41,8 +43,11 @@ class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
 
 // class du texte
 
+// ignore: must_be_immutable
 class FavoriteTextWidget extends StatefulWidget {
   late int favoriteCount;
+
+  FavoriteTextWidget({super.key});
 
   // ignore: library_private_types_in_public_api, annotate_overrides, no_logic_in_create_state
   _FavoriteTextWidgetState createState() => _FavoriteTextWidgetState();

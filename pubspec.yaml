@@ -30,6 +30,8 @@ environment:
 dependencies:
   transparent_image: ^2.0.1
   provider: ^6.0.5
+  sqflite: any
+  path: any
   flutter:
     sdk: flutter
 

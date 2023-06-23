@@ -1,3 +1,4 @@
+// ignore_for_file: unused_import, unused_element
 import 'package:azote/recipe.dart';
 import 'package:azote/recipe_list_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,11 +16,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Flutter Demo',
+        initialRoute: '/',
+        onGenerateRoute: (settings) => RouteGenerator.generateRoute(settings),
         theme: ThemeData(
           primarySwatch: Colors.red,
           // secondaryHeaderColor: Colors.red
         ),
-        home: RecipeListScreen()
+        
         // RecipeScreen(
         //   recipe: Recipe(
         //      "Eru",
@@ -32,7 +35,6 @@ class MyApp extends StatelessWidget {
         // )
         );
   }
-
 }
 
 class MyHomePage extends StatefulWidget {
@@ -107,24 +109,32 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+class RouteGenerator {
+  static Route<dynamic>? generateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case '/':
+        return MaterialPageRoute(builder: (context) => const RecipeListScreen());
+      case '/recipe':
+          return PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              RecipeScreen(recipe: settings.arguments as Recipe),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            animation = CurvedAnimation(parent: animation, curve: Curves.ease);
+            return FadeTransition(opacity: animation, child: child);
+          },
+        );
 
-// Class RouteGenerator
-// {
-//   static Route<dynamic> generateRoute(RouteSettings settings)
-//   {
-//     switch(settings.name)
-//     {
-//        case '/':
-//         return MaterialPageRoute(builder: (context) => RecipeListScreen());
-//        case '/recipe':
-//         PageRouteBuilder(
-//               pageBuilder: (context, animation, secondaryAnimation) => RecipeScreen(recipe: settings.arguments),
-//               transitionsBuilder: (context, animation, secondaryAnimation, child)
-//               {
-//                 animation = CurvedAnimation(parent: animation, curve: Curves.ease);
-//                 return FadeTransition(opacity: animation, child: child);
-//               },
-//             );
-//     }
-//   }
-// }
+      default:
+        return MaterialPageRoute(
+          builder: (context) => Scaffold(
+            appBar: AppBar(
+              title: const Text("Erreur")
+            ),
+            body: const Center(child: Text("Page not found")),
+          )
+          );
+
+    }
+
+  }
+}

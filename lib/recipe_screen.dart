@@ -8,7 +8,7 @@ import 'favoritechangeNotifier.dart';
 
 // classe de la page Recipe creer par Toko
 class RecipeScreen extends StatelessWidget {
-  RecipeScreen({super.key, required this.recipe});
+  const RecipeScreen({super.key, required this.recipe});
 
   final Recipe recipe;
 
@@ -25,8 +25,7 @@ class RecipeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) =>
-          FavoriteChangeNotifier(recipe.isFavorited, recipe.favoriteCount),
+      create: (context) => FavoriteChangeNotifier(recipe.isFavorited, recipe.favoriteCount),
       child: Scaffold(
           appBar: AppBar(
             title: const Text('Mes recettes'),
@@ -109,10 +108,12 @@ class RecipeScreen extends StatelessWidget {
                     style: const TextStyle(fontSize: 16, color: Colors.grey)),
               ],
             )),
-            Row(
-              children: [FavoriteIconWidget(), FavoriteTextWidget()],
-            )
-          ],
+            
+            FavoriteIconWidget(),
+            FavoriteTextWidget()
+            ],
+            
+          
         ));
   }
 }

@@ -1,9 +1,9 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, file_names
 
 import 'package:flutter/foundation.dart';
 
 class FavoriteChangeNotifier with ChangeNotifier {
-  late final bool _isFavorited;
+  bool _isFavorited;
   final int _favoriteCount;
 
   FavoriteChangeNotifier(this._isFavorited, this._favoriteCount);
