@@ -116,21 +116,14 @@ class RecipeItemWidget extends StatelessWidget {
               pageBuilder: (context, animation, secondaryAnimation) =>
                   RecipeScreen(recipe: recipe),
               transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                // var begin = Offset(0.0, 1.0);
-                // var end = Offset.zero;
-                // var tween = Tween(begin: begin, end: end);
 
-                // return SlideTransition(
-                //   position: animation.drive(tween),
-                //   child: child,
-                // );
-
-                animation =
-                    CurvedAnimation(parent: animation, curve: Curves.ease);
+              (context, animation, secondaryAnimation, child)
+              {
+                animation = CurvedAnimation(parent: animation, curve: Curves.ease);
                 return FadeTransition(opacity: animation, child: child);
               },
-            ));
+            )
+            );
       },
       child: Card(
         margin: const EdgeInsets.all(8),
@@ -143,8 +136,8 @@ class RecipeItemWidget extends StatelessWidget {
                 placeholder: "images/loading-waiting.gif",
                 image: recipe
                     .imageUrl, //"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn7nTfAtP3HjJD6nMl9VJklVer3CVuTvtTvA&usqp=CAU",
-                width: 600,
-                height: 240,
+                width: 300,
+                height: 150,
                 fit: BoxFit.cover,
               ),
             ),

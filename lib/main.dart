@@ -108,3 +108,23 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 
+// Class RouteGenerator
+// {
+//   static Route<dynamic> generateRoute(RouteSettings settings)
+//   {
+//     switch(settings.name)
+//     {
+//        case '/':
+//         return MaterialPageRoute(builder: (context) => RecipeListScreen());
+//        case '/recipe':
+//         PageRouteBuilder(
+//               pageBuilder: (context, animation, secondaryAnimation) => RecipeScreen(recipe: settings.arguments),
+//               transitionsBuilder: (context, animation, secondaryAnimation, child)
+//               {
+//                 animation = CurvedAnimation(parent: animation, curve: Curves.ease);
+//                 return FadeTransition(opacity: animation, child: child);
+//               },
+//             );
+//     }
+//   }
+// }
