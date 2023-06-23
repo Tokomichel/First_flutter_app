@@ -1,4 +1,4 @@
-import 'package:azote/favoritechangeNotifier.dart';
+// import 'package:azote/favoritechangeNotifier.dart';
 
 class Recipe {
   late String title;

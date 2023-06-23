@@ -113,7 +113,7 @@ class RouteGenerator {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (context) => const RecipeListScreen());
+        return MaterialPageRoute(builder: (context) =>  const RecipeListScreen());
       case '/recipe':
           return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
@@ -135,6 +135,5 @@ class RouteGenerator {
           );
 
     }
-
   }
 }
