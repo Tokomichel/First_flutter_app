@@ -1,19 +1,20 @@
 // ignore_for_file: unused_field, file_names
-
+import 'package:azote/recipe.dart';
+import 'package:azote/recipe_box.dart';
 import 'package:flutter/foundation.dart';
 
 class FavoriteChangeNotifier with ChangeNotifier {
-  bool _isFavorited;
-  final int _favoriteCount;
+  Recipe recipe;
 
-  FavoriteChangeNotifier(this._isFavorited, this._favoriteCount);
+  FavoriteChangeNotifier(this.recipe);
 
   // ignore: unnecessary_getters_setters
-  bool get isFavorited => _isFavorited;
-  int get favoriteCount => _favoriteCount + (_isFavorited ? 1 : 0);
+  bool get isFavorited => recipe.isFavorited;
+  int get favoriteCount => recipe.favoriteCount + (recipe.isFavorited ? 1 : 0);
 
   set isFavorited(bool isFavorited) {
-    _isFavorited = isFavorited;
+    recipe.isFavorited = isFavorited;
+    RecipeBox.box!.put(recipe.key(), recipe);
     notifyListeners();
   }
 }

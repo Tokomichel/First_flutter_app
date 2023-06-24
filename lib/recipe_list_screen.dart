@@ -2,7 +2,8 @@ import 'package:azote/recipe.dart';
 // ignore: unused_import
 import 'package:azote/recipe_screen.dart';
 import 'package:flutter/material.dart';
-import 'recipe_database.dart';
+import 'recipe_box.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class RecipeListScreen extends StatefulWidget {
   const RecipeListScreen({super.key});
@@ -18,21 +19,22 @@ class RecipeListScreenState extends State<RecipeListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Mes recettes")),
-      body: FutureBuilder<List<Recipe>>(
-          future: RecipeDataBase.instance.test(),
-          builder:  (BuildContext context, AsyncSnapshot<List<Recipe>> snapshot) {
-            if (snapshot.hasData) {
-              List<Recipe> recipes = snapshot.data!;
+      body: ValueListenableBuilder(
+          valueListenable: RecipeBox.box!.listenable(),
+          builder: (context, Box items, _) {
+            List<String> keys = items.keys.cast<String>().toList();
+
+           
               return ListView.builder(
-                  itemCount: recipes.length,
+                  itemCount: keys.length,
                   itemBuilder: (context, index) {
-                    final recipe = recipes[index];
+                    final recipe = items.get(keys[index]);
 
                     return Dismissible(
                         key: Key(recipe.title),
                         onDismissed: (direction) {
                           setState(() {
-                            recipes.removeAt(index);
+                            RecipeBox.box?.delete(recipe.key());
                           });
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text("${recipe.title} supprime")));
@@ -40,12 +42,7 @@ class RecipeListScreenState extends State<RecipeListScreen> {
                         background: Container(color: Colors.red),
                         child: RecipeItemWidget(recipe: recipe));
                   });
-            }
-
-            else
-            {
-              return  Text("${snapshot.data}");
-            }
+            
           }),
     );
   }

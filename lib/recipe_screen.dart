@@ -25,7 +25,7 @@ class RecipeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => FavoriteChangeNotifier(recipe.isFavorited, recipe.favoriteCount),
+      create: (context) => FavoriteChangeNotifier(recipe),
       child: Scaffold(
           appBar: AppBar(
             title: const Text('Mes recettes'),
