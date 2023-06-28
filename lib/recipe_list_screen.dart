@@ -34,6 +34,34 @@ class RecipeListScreenState extends State<RecipeListScreen> {
                 final recipe = items.get(keys[index]);
                 return Dismissible(
                     key: ValueKey(recipe.title),
+
+
+                    confirmDismiss: (direction) async {
+                    return await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text("Confirmer"),
+                        content: const Text("Êtes-vous sûr de vouloir supprimer cet élément ?"),
+                        actions: <Widget>[
+                        TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: const Text("ANNULER"),
+                        ),
+                      TextButton(
+                      onPressed: () => Navigator.of(context).pop(true),
+                      child: const Text(
+                        "SUPPRIMER",
+                        style: TextStyle(
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+                    );
+            },
                     onDismissed: (direction) {
                       setState(() {
                         RecipeBox.box?.delete(keys[index]);

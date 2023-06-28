@@ -18,7 +18,7 @@ class ModifyRecipeScreen extends StatefulWidget {
 
 class _ModifyRecipeScreenState extends State<ModifyRecipeScreen> {
   // ignore: non_constant_identifier_names
-  final String IMAGE_URL = "images/eru.jpg";
+  //final String IMAGE_URL = "images/eru.jpg";
 
   var formKey = GlobalKey<FormState>();
   var titleController = TextEditingController();
@@ -128,7 +128,7 @@ class _ModifyRecipeScreenState extends State<ModifyRecipeScreen> {
                       toko.recipe = Recipe(
                           titleController.text,
                           userController.text,
-                          IMAGE_URL,
+                          toko.recipe.imageUrl,
                           descriptionController.text,
                           false,
                           Random().nextInt(100));
