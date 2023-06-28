@@ -1,9 +1,13 @@
 // ignore_for_file: unused_import, unused_element
+
 import 'package:azote/recipe.dart';
 import 'package:azote/recipe_box.dart';
+import 'package:azote/recipe_form_screen.dart';
 import 'package:azote/recipe_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:azote/recipe_screen.dart';
+
+import 'modify_recipe_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +26,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       onGenerateRoute: (settings) => RouteGenerator.generateRoute(settings),
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.lightBlue,
         // secondaryHeaderColor: Colors.red
       ),
 
@@ -127,6 +131,17 @@ class RouteGenerator {
             return FadeTransition(opacity: animation, child: child);
           },
         );
+
+      case '/newRecipe':
+        return MaterialPageRoute(
+            builder: (context) => const RecipeFormScreen());
+ 
+      case '/modifyRecipe':
+        // ignore: avoid_print
+        print("On lance la page de modification");
+        return MaterialPageRoute(
+            builder: (context) =>
+                ModifyRecipeScreen(toko: settings.arguments as Toko));
 
       default:
         return MaterialPageRoute(

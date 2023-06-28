@@ -1,8 +1,12 @@
-import 'package:azote/recipe.dart';
-// ignore: unused_import
-import 'package:azote/recipe_screen.dart';
+// ignore_for_file: avoid_print
+
+import 'package:azote/modify_recipe_screen.dart';
+import 'package:azote/recipe_box.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+//import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'recipe_box.dart';
+//import 'package:recipe_app/recipe_box.dart';
+import 'recipe.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class RecipeListScreen extends StatefulWidget {
@@ -18,66 +22,87 @@ class RecipeListScreenState extends State<RecipeListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Mes recettes")),
-      body: ValueListenableBuilder(
-          valueListenable: RecipeBox.box!.listenable(),
-          builder: (context, Box items, _) {
+      appBar: AppBar(
+        title: const Text("Mes recettes"),
+      ),
+      body: /*FutureBuilder<List<Recipe>>*/ ValueListenableBuilder(
+          builder: (context, items, _) {
             List<String> keys = items.keys.cast<String>().toList();
-
-           
-              return ListView.builder(
-                  itemCount: keys.length,
-                  itemBuilder: (context, index) {
-                    final recipe = items.get(keys[index]);
-
-                    return Dismissible(
-                        key: Key(recipe.title),
-                        onDismissed: (direction) {
-                          setState(() {
-                            RecipeBox.box?.delete(recipe.key());
-                          });
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("${recipe.title} supprime")));
-                        },
-                        background: Container(color: Colors.red),
-                        child: RecipeItemWidget(recipe: recipe));
-                  });
-            
-          }),
+            return ListView.builder(
+              itemCount: keys.length,
+              itemBuilder: (context, index) {
+                final recipe = items.get(keys[index]);
+                return Dismissible(
+                    key: ValueKey(recipe.title),
+                    onDismissed: (direction) {
+                      setState(() {
+                        RecipeBox.box?.delete(keys[index]);
+                        // RecipeDatabase.instance.deleteRecipe(recipe.title);
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("${recipe.title} supprimé")));
+                    },
+                    background: Container(color: Colors.red),
+                    child: RecipeItemWidget(
+                      recipe: recipe,
+                      index: index, 
+                    ));
+              },
+            );
+          },
+          /*future: RecipeDatabase.instance.recipes()*/
+          valueListenable: RecipeBox.box!.listenable()),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/newRecipe');
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
 
+// ignore: must_be_immutable
 class RecipeItemWidget extends StatelessWidget {
-  const RecipeItemWidget({Key? key, required this.recipe}) : super(key: key);
+  RecipeItemWidget({super.key, required this.recipe, this.index});
 
   final Recipe recipe;
+  int? index;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onLongPress: () {
+        Navigator.pushNamed(context, '/modifyRecipe',
+            arguments: Toko(recipe, index!));
+        print("Tu as appuyer longtemps");
+      },
       onTap: () {
         Navigator.pushNamed(context, '/recipe', arguments: recipe);
+        print("Tu as TAPER");
       },
       child: Card(
-        margin: const EdgeInsets.all(8),
-        elevation: 8,
+        margin: const EdgeInsets.all(8.0),
+        elevation: 8.0,
         child: Row(
           children: [
             Hero(
-              tag: "recipe ${recipe.title}",
-              child: FadeInImage.assetNetwork(
-                placeholder: "images/loading-waiting.gif",
-                image: recipe
-                    .imageUrl, //"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn7nTfAtP3HjJD6nMl9VJklVer3CVuTvtTvA&usqp=CAU",
+              tag: "imageRecipe${recipe.title}",
+              child:  CachedNetworkImage(
+                imageUrl: recipe.imageUrl,
+                placeholder: (context, url) =>
+                    const Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
                 width: 100,
                 height: 100,
                 fit: BoxFit.cover,
               ),
+              
             ),
             Padding(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     padding: const EdgeInsets.only(bottom: 8),
