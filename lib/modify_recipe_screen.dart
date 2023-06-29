@@ -1,8 +1,11 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:azote/recipe.dart';
 import 'package:azote/recipe_box.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 // ignore: must_be_immutable
 class ModifyRecipeScreen extends StatefulWidget {
@@ -25,11 +28,27 @@ class _ModifyRecipeScreenState extends State<ModifyRecipeScreen> {
   var descriptionController = TextEditingController();
   var userController = TextEditingController();
 
+  File? _file;
+  String _imageError = "";
+  String imagePath = "";
+
   // Recipe recipe;
   // int? index;
   Toko toko;
 
   _ModifyRecipeScreenState(this.toko);
+
+   // ignore: unused_element
+   Future<void> _pickImage(ImageSource source) async {
+    final pickedImage = await ImagePicker().pickImage(source: source);
+
+    if (pickedImage != null) {
+      setState(() {
+        toko.recipe.imageUrl = pickedImage.path;
+        _file = File(pickedImage.path);
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -62,7 +81,64 @@ class _ModifyRecipeScreenState extends State<ModifyRecipeScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(
-                    top: 16.0, left: 16.0, right: 16.0, bottom: 8.8),
+                  top: 16.0, left: 16.0, right: 16.0, bottom: 8.8),
+                child: Center(
+                  child: Stack(children: [
+                    Hero(
+                      tag: "imageRecipe${toko.recipe.title}",
+                      child: toko.recipe.imageUrl.startsWith("https://") ||
+                              toko.recipe.imageUrl.startsWith("http://")
+                          ? CachedNetworkImage(
+                              imageUrl: toko.recipe.imageUrl,
+                              placeholder: (context, url) => const Center(
+                                  child: CircularProgressIndicator()),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                              width: 250.0,
+                              height: 250.0,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.file(
+                              _file != null
+                                  ? _file!
+                                  : File(toko.recipe.imageUrl),
+                              width: 250.0,
+                              height: 250.0,
+                              fit: BoxFit.cover,
+                            ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: IconButton(
+                        onPressed: () async {
+                          await _pickImage(ImageSource.gallery);
+                          setState(() {
+                            _imageError = "";
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.camera_alt_rounded,
+                          color: Colors.red,
+                          size: 30,
+                        ),
+                      ),
+                    ),
+                  ]),
+                ),
+              ),
+              Center(
+                child: SizedBox(
+                  height: 4,
+                  child: Text(
+                    _imageError,
+                    style: const TextStyle(color: Colors.red, fontSize: 12),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 16.0, left: 16.0, right: 16.0, bottom: 8.8),
                 child: TextFormField(
                   //initialValue: toko.recipe.title,
                   controller: titleController,

@@ -34,35 +34,37 @@ class RecipeListScreenState extends State<RecipeListScreen> {
                 final recipe = items.get(keys[index]);
                 return Dismissible(
                     key: ValueKey(recipe.title),
-
-
                     confirmDismiss: (direction) async {
-                    return await showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text("Confirmer"),
-                        content: const Text("Êtes-vous sûr de vouloir supprimer cet élément ?"),
-                        actions: <Widget>[
-                        TextButton(
-                        onPressed: () => Navigator.of(context).pop(false),
-                        child: const Text("ANNULER"),
-                        ),
-                      TextButton(
-                      onPressed: () => Navigator.of(context).pop(true),
-                      child: const Text(
-                        "SUPPRIMER",
-                        style: TextStyle(
-                          color: Colors.red,
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              },
-                    );
-            },
+                      return await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text("Confirmer"),
+                            content: const Text(
+                                "Êtes-vous sûr de vouloir supprimer cet élément ?"),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.of(context).pop(false),
+                                child: const Text("ANNULER"),
+                              ),
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.of(context).pop(true),
+                                child: const Text(
+                                  "SUPPRIMER",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                     onDismissed: (direction) {
+                      print(direction);
                       setState(() {
                         RecipeBox.box?.delete(keys[index]);
                         // RecipeDatabase.instance.deleteRecipe(recipe.title);
@@ -73,7 +75,7 @@ class RecipeListScreenState extends State<RecipeListScreen> {
                     background: Container(color: Colors.red),
                     child: RecipeItemWidget(
                       recipe: recipe,
-                      index: index, 
+                      index: index,
                     ));
               },
             );
@@ -99,6 +101,7 @@ class RecipeItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    isOnline(recipe.imageUrl);
     return GestureDetector(
       onLongPress: () {
         Navigator.pushNamed(context, '/modifyRecipe',
@@ -116,7 +119,7 @@ class RecipeItemWidget extends StatelessWidget {
           children: [
             Hero(
               tag: "imageRecipe${recipe.title}",
-              child:  CachedNetworkImage(
+              child: CachedNetworkImage(
                 imageUrl: recipe.imageUrl,
                 placeholder: (context, url) =>
                     const Center(child: CircularProgressIndicator()),
@@ -124,8 +127,8 @@ class RecipeItemWidget extends StatelessWidget {
                 width: 100,
                 height: 100,
                 fit: BoxFit.cover,
-              ),
-              
+              ) //else
+              ,
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -151,5 +154,17 @@ class RecipeItemWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool isOnline(String link)
+  {
+    if(link.substring(0, 4) == "http")
+    {
+       return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 }

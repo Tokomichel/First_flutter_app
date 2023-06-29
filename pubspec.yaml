@@ -35,6 +35,7 @@ dependencies:
   hive_flutter: ^1.1.0
   path_provider: ^2.0.2 
   flutter_settings_ui: ^2.0.1
+  image_picker: ^1.0.0
   flutter:
     sdk: flutter
 
