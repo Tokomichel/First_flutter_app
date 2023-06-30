@@ -38,9 +38,10 @@ class _ModifyRecipeScreenState extends State<ModifyRecipeScreen> {
 
   _ModifyRecipeScreenState(this.toko);
 
-   // ignore: unused_element
-   Future<void> _pickImage(ImageSource source) async {
-    final pickedImage = await ImagePicker().pickImage(source: source);
+  // ignore: unused_element
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickedImage != null) {
       setState(() {
@@ -81,7 +82,7 @@ class _ModifyRecipeScreenState extends State<ModifyRecipeScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(
-                  top: 16.0, left: 16.0, right: 16.0, bottom: 8.8),
+                    top: 16.0, left: 16.0, right: 16.0, bottom: 8.8),
                 child: Center(
                   child: Stack(children: [
                     Hero(
@@ -117,9 +118,9 @@ class _ModifyRecipeScreenState extends State<ModifyRecipeScreen> {
                             _imageError = "";
                           });
                         },
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.camera_alt_rounded,
-                          color: Colors.red,
+                          color: Colors.blue.shade600,
                           size: 30,
                         ),
                       ),
@@ -136,9 +137,10 @@ class _ModifyRecipeScreenState extends State<ModifyRecipeScreen> {
                   ),
                 ),
               ),
+
               Padding(
                 padding: const EdgeInsets.only(
-                  top: 16.0, left: 16.0, right: 16.0, bottom: 8.8),
+                    top: 16.0, left: 16.0, right: 16.0, bottom: 8.8),
                 child: TextFormField(
                   //initialValue: toko.recipe.title,
                   controller: titleController,
