@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:azote/recipe.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'favorite_widget.dart';
@@ -39,14 +42,24 @@ class RecipeScreen extends StatelessWidget {
                 
                 
                 }",
-                child: FadeInImage.assetNetwork(
-                  placeholder: "images/loading-waiting.gif",
-                  image: recipe
-                      .imageUrl, //"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQn7nTfAtP3HjJD6nMl9VJklVer3CVuTvtTvA&usqp=CAU",
-                  width: 600,
-                  height: 240,
-                  fit: BoxFit.cover,
-                ),
+                child: recipe.imageUrl.startsWith("https://") ||
+                              recipe.imageUrl.startsWith("http://")
+                          ? CachedNetworkImage(
+                              imageUrl: recipe.imageUrl,
+                              placeholder: (context, url) => const Center(
+                                  child: CircularProgressIndicator()),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                              width: 250.0,
+                              height: 250.0,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.file(
+                             File(recipe.imageUrl),
+                              width: 250.0,
+                              height: 250.0,
+                              fit: BoxFit.cover,
+                            ),//else,
               ),
               recipeTitle(),
               buttonSection(),

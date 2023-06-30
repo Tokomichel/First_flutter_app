@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'dart:io';
 import 'package:azote/modify_recipe_screen.dart';
 import 'package:azote/recipe_box.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -119,16 +120,25 @@ class RecipeItemWidget extends StatelessWidget {
           children: [
             Hero(
               tag: "imageRecipe${recipe.title}",
-              child: CachedNetworkImage(
-                imageUrl: recipe.imageUrl,
-                placeholder: (context, url) =>
-                    const Center(child: CircularProgressIndicator()),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-                width: 100,
-                height: 100,
-                fit: BoxFit.cover,
-              ) //else
-              ,
+              child: recipe.imageUrl.startsWith("https://") ||
+                              recipe.imageUrl.startsWith("http://")
+                          ? CachedNetworkImage(
+                              imageUrl: recipe.imageUrl,
+                              placeholder: (context, url) => const Center(
+                                  child: CircularProgressIndicator()),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
+                              width: 100.0,
+                              height: 100.0,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.file(
+                             File(recipe.imageUrl),
+                              width: 100.0,
+                              height: 100.0,
+                              fit: BoxFit.cover,
+                            ),//else
+              
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
