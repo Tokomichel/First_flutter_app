@@ -27,6 +27,7 @@ class RecipeListScreenState extends State<RecipeListScreen> {
         title: const Text("Mes recettes"),
       ),
       body: /*FutureBuilder<List<Recipe>>*/ ValueListenableBuilder(
+          valueListenable: RecipeBox.box!.listenable(),
           builder: (context, items, _) {
             List<String> keys = items.keys.cast<String>().toList();
             return ListView.builder(
@@ -82,7 +83,8 @@ class RecipeListScreenState extends State<RecipeListScreen> {
             );
           },
           /*future: RecipeDatabase.instance.recipes()*/
-          valueListenable: RecipeBox.box!.listenable()),
+
+        ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushNamed(context, '/newRecipe');

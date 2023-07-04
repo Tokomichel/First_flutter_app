@@ -10,7 +10,7 @@ class RecipeAdapter extends TypeAdapter<Recipe> {
   @override
   final int typeId = 0;
 
-  @override
+  @override  
   Recipe read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
